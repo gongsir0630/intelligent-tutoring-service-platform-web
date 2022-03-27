@@ -3,8 +3,11 @@ const tokens = {
   admin: {
     token: 'admin-token'
   },
-  editor: {
-    token: 'editor-token'
+  teacher: {
+    token: 'teacher-token'
+  },
+  student: {
+    token: 'student-token'
   }
 }
 
@@ -15,11 +18,17 @@ const users = {
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Super Admin'
   },
-  'editor-token': {
-    roles: ['editor'],
-    introduction: 'I am an editor',
+  'teacher-token': {
+    roles: ['teacher'],
+    introduction: 'I am a teacher',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Normal Editor'
+    name: 'Normal Teacher'
+  },
+  'student-token': {
+    roles: ['student'],
+    introduction: 'I am a student',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: 'Normal Student'
   }
 }
 
