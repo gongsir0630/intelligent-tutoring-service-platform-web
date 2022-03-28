@@ -89,5 +89,41 @@ module.exports = [
         data: 'success'
       }
     }
+  },
+
+  // user register
+  {
+    url: '/vue-admin-template/user/register',
+    type: 'post',
+    response: config => {
+      const { username, name, role } = config.body
+      let token = tokens[username]
+
+      // mock error
+      if (!token) {
+        // 复制一份token信息
+        tokens[username] = {
+          token: username
+        }
+        // 创建user信息
+        const copy = users[role + '-token']
+        users[username] = {
+          roles: copy.roles,
+          introduction: copy.introduction,
+          avatar: copy.avatar,
+          name: name
+        }
+
+        token = tokens[username]
+        console.log(tokens)
+        console.log(users)
+        console.log(token)
+      }
+
+      return {
+        code: 20000,
+        data: token
+      }
+    }
   }
 ]
