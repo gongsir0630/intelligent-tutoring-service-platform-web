@@ -30,7 +30,7 @@
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="onSubmit">注册</el-button>
-                <el-button>取消</el-button>
+                <el-button @click="onCancel">取消</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -57,6 +57,9 @@ export default {
     }
   },
   methods: {
+    onCancel() {
+      this.$router.push(`/login`)
+    },
     onSubmit() {
       console.log(this.form)
 
@@ -77,9 +80,6 @@ export default {
 <style>
   body {
     background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-    line-height: 160px;
   }
   .el-header, .el-footer {
     background-color: #B3C0D1;
