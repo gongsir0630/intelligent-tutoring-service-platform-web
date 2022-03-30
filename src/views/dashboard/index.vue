@@ -41,40 +41,80 @@
         <div class="my-border" style="border:1px solid #000">
           <h2 class="span-class">学校数据</h2>
           <hr>
-          <span class="span-class">学生总数</span><el-progress :text-inside="true" :percentage="80" :format="format" color="#f56c6c" :stroke-width="strokeWidth" />
+          <span class="span-class">学生总数</span><el-progress :text-inside="true" :percentage="stuSum" :format="format" color="#f56c6c" :stroke-width="strokeWidth" />
           <span class="span-class">老师总数</span><el-progress :text-inside="true" :percentage="5" :format="format" color="#e6a23c" :stroke-width="strokeWidth" />
           <span class="span-class">教务总数</span><el-progress :text-inside="true" :percentage="12" :format="format" :stroke-width="strokeWidth" />
           <span class="span-class">兼职总数</span><el-progress :text-inside="true" :percentage="3" :format="format" color="#6f7ad3" :stroke-width="strokeWidth" />
         </div>
       </el-col>
-      <el-col :span="5" style="text-align:center">
+      <el-col :span="17" style="text-align:center">
         <div class="my-border" style="border:1px solid #000">
-          <p />
-          <span class="span-class">学生总数</span><el-progress :text-inside="true" :percentage="80" :format="format" color="#f56c6c" :stroke-width="strokeWidth" />
-          <span class="span-class">老师总数</span><el-progress :text-inside="true" :percentage="5" :format="format" color="#e6a23c" :stroke-width="strokeWidth" />
-          <span class="span-class">教务总数</span><el-progress :text-inside="true" :percentage="12" :format="format" :stroke-width="strokeWidth" />
-          <span class="span-class">兼职总数</span><el-progress :text-inside="true" :percentage="3" :format="format" color="#6f7ad3" :stroke-width="strokeWidth" />
-        </div>
-      </el-col>
-      <el-col :span="5" style="text-align:center">
-        <div class="my-border" style="border:1px solid #000">
-          <p />
-          <span class="span-class">学生总数</span><el-progress :text-inside="true" :percentage="80" :format="format" color="#f56c6c" :stroke-width="strokeWidth" />
-          <span class="span-class">老师总数</span><el-progress :text-inside="true" :percentage="5" :format="format" color="#e6a23c" :stroke-width="strokeWidth" />
-          <span class="span-class">教务总数</span><el-progress :text-inside="true" :percentage="12" :format="format" :stroke-width="strokeWidth" />
-          <span class="span-class">兼职总数</span><el-progress :text-inside="true" :percentage="3" :format="format" color="#6f7ad3" :stroke-width="strokeWidth" />
-        </div>
-      </el-col>
-      <el-col :span="5" style="text-align:center">
-        <div class="my-border" style="border:1px solid #000">
-          <p />
-          <span class="span-class">学生总数</span><el-progress :text-inside="true" :percentage="80" :format="format" color="#f56c6c" :stroke-width="strokeWidth" />
-          <span class="span-class">老师总数</span><el-progress :text-inside="true" :percentage="5" :format="format" color="#e6a23c" :stroke-width="strokeWidth" />
-          <span class="span-class">教务总数</span><el-progress :text-inside="true" :percentage="12" :format="format" :stroke-width="strokeWidth" />
-          <span class="span-class">兼职总数</span><el-progress :text-inside="true" :percentage="3" :format="format" color="#6f7ad3" :stroke-width="strokeWidth" />
+          <el-row type="flex" justify="space-around" style="margin-bottom: 0px;">
+            <el-col :span="10" style="text-align:left;">
+              <h2>校区备注</h2>
+            </el-col>
+            <el-col :span="10" style="text-align:right">
+              <el-button type="primary" size="small" @click="handleClickAdd">添加</el-button>
+            </el-col>
+          </el-row>
+          <hr>
+          <el-table
+            :data="tableData"
+            border
+            style="width: 98%"
+          >
+            <el-table-column
+              prop="title"
+              label="标题"
+            />
+            <el-table-column
+              prop="content"
+              label="内容"
+            />
+            <el-table-column
+              prop="date"
+              label="时间"
+            />
+            <el-table-column
+              fixed="right"
+              label="操作"
+            >
+              <template slot-scope="scope">
+                <el-button type="text" size="small" @click="handleClick(scope.$index, scope.row)">编辑</el-button>
+                <el-button type="text" size="small" @click.native.prevent="deleteRow(scope.$index, tableData)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </el-col>
     </el-row>
+
+    <el-dialog title="添加备注" :visible.sync="dialogFormVisible">
+      <el-form :model="form" style="width:80%">
+        <el-form-item label="标题" :label-width="formLabelWidth">
+          <el-input v-model="form.title" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="内容" :label-width="formLabelWidth">
+          <!-- <el-select v-model="form.region" placeholder="请选择活动区域">
+            <el-option label="区域一" value="shanghai" />
+            <el-option label="区域二" value="beijing" />
+          </el-select> -->
+          <el-input v-model="form.content" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="时间" :label-width="formLabelWidth">
+          <el-date-picker
+            v-model="form.date"
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+          />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="handleClickCancel">取 消</el-button>
+        <el-button type="primary" @click="save2TableData">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -89,19 +129,68 @@ export default {
       teacherCnt: 3,
       teachingAffairsCnt: 1,
       personalIntroduction: '个人介绍',
-      strokeWidth: 20
+      strokeWidth: 20,
+      stuSum: 90,
+      dialogFormVisible: false,
+      form: {
+        title: '',
+        content: '',
+        date: ''
+      },
+      formLabelWidth: '100px',
+      op: 'add',
+      curIndex: 0
     }
   },
   computed: {
     ...mapGetters([
       'name',
       'roles',
-      'avatar'
+      'avatar',
+      'tableData'
     ])
   },
   methods: {
     format(percentage) {
       return `${percentage * 5}人`
+    },
+    handleClick(index, row) {
+      console.log(index)
+      console.log(row)
+      this.op = 'edit'
+      this.curIndex = index
+      this.form = row
+      this.dialogFormVisible = true
+    },
+    save2TableData() {
+      console.log(this.form)
+      if (this.op === 'add') {
+        this.tableData.push(this.form)
+      } else {
+        this.tableData[this.curIndex] = this.form
+      }
+      this.dialogFormVisible = false
+      this.clickForm()
+    },
+    deleteRow(index, rows) {
+      rows.splice(index, 1)
+    },
+    handleClickAdd() {
+      this.dialogFormVisible = true
+      this.op = 'add'
+    },
+    clickForm() {
+      this.form = {
+        title: '',
+        content: '',
+        date: ''
+      }
+    },
+    handleClickCancel() {
+      this.dialogFormVisible = false
+      this.clickForm()
+      this.op = 'add'
+      this.curIndex = 0
     }
   }
 }
@@ -158,5 +247,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .el-table {
+    margin: 10px 10px 10px 10px;
+  }
+  .el-form-item .el-date-picker {
+    width: 100%;
   }
 </style>

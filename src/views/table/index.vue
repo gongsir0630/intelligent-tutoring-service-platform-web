@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-table
       v-loading="listLoading"
-      :data="list"
+      :data="tableData"
       element-loading-text="Loading"
       border
       fit
@@ -20,7 +20,7 @@
       </el-table-column>
       <el-table-column label="Author" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.content }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Pageviews" width="110" align="center">
@@ -45,6 +45,7 @@
 
 <script>
 import { getList } from '@/api/table'
+import { mapGetters } from 'vuex'
 
 export default {
   filters: {
@@ -62,6 +63,11 @@ export default {
       list: null,
       listLoading: true
     }
+  },
+  computed: {
+    ...mapGetters([
+      'tableData'
+    ])
   },
   created() {
     this.fetchData()

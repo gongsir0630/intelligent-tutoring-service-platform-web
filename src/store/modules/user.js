@@ -7,7 +7,24 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: []
+    roles: [],
+    tableData: [{ // 对象
+      title: '何双宝', // 字段
+      content: '上海',
+      date: '2016-05-02'
+    }, {
+      title: '何双宝',
+      content: '上海',
+      date: '2016-05-02'
+    }, {
+      title: '何双宝',
+      content: '成都',
+      date: '2016-05-02'
+    }, {
+      title: '张三',
+      content: '上海',
+      date: '2016-05-02'
+    }]
   }
 }
 
