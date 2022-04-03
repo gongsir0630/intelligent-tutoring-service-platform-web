@@ -25,6 +25,9 @@
               <el-form-item label="姓名">
                 <el-input v-model="form.name" />
               </el-form-item>
+              <el-form-item label="自我介绍">
+                <el-input v-model="form.introduction" />
+              </el-form-item>
               <el-form-item label="手机号码">
                 <el-input v-model="form.phone" />
               </el-form-item>
@@ -51,6 +54,7 @@ export default {
         password: '',
         passwordAgain: '',
         name: '',
+        introduction: '',
         phone: '',
         role: 'student'
       }

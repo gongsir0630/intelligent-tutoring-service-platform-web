@@ -51,10 +51,18 @@ const mutations = {
 const actions = {
   // user register
   register({ commit }, userInfo) {
-    const { username, role, name } = userInfo
+    const { username, role, name, password, introduction, phone } = userInfo
     console.log(userInfo)
     return new Promise((resolve, reject) => {
-      register({ username: username.trim(), name: name, role: role }).then(response => {
+      register({
+        username: username.trim(),
+        name: name,
+        role: role,
+        password,
+        introduction,
+        phone,
+        avatar: 'https://thirdqq.qlogo.cn/qqapp/1110061270/E0B4163FDCD19C3791B49B64EDB9F688/100'
+      }).then(response => {
         const { data } = response
         console.log(data)
         commit('SET_TOKEN', data.token)
