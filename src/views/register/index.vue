@@ -31,6 +31,34 @@
               <el-form-item label="手机号码">
                 <el-input v-model="form.phone" />
               </el-form-item>
+              <el-form-item v-show="form.role=='student'" label="学校">
+                <el-input v-model="form.school" />
+              </el-form-item>
+              <el-form-item
+                v-show="form.role=='student'"
+                label="年级"
+              >
+                <el-select v-model="form.grade" placeholder="请选择年级">
+                  <el-option v-for="item in studentGradeList" :key="item.value" :label="item.label" :value="item.value" />
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                v-show="form.role=='teacher'"
+                label="校区"
+              >
+                <el-input
+                  v-model="form.campus"
+                  auto-complete="off"
+                />
+              </el-form-item>
+              <el-form-item
+                v-show="form.role=='teacher'"
+                label="教授科目"
+              >
+                <el-select v-model="form.subject" placeholder="请选择科目">
+                  <el-option v-for="item in subjectList" :key="item.value" :label="item.label" :value="item.value" />
+                </el-select>
+              </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="onSubmit">注册</el-button>
                 <el-button @click="onCancel">取消</el-button>
@@ -45,7 +73,7 @@
 </template>
 
 <script>
-
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -56,11 +84,33 @@ export default {
         name: '',
         introduction: '',
         phone: '',
-        role: 'student'
-      }
+        role: 'student',
+        school: '',
+        grade: '',
+        campus: '',
+        subject: '',
+        display: ''
+      },
+      subjectList: []
     }
   },
+  computed: {
+    ...mapGetters([
+      'userList',
+      'studentGradeList'
+    ])
+  },
+  created() {
+    this.fetchData()
+  },
   methods: {
+    ...mapActions('user', ['getStudentGradeList']),
+    async fetchData() {
+      // 从后端查询数据
+      await this.getStudentGradeList()
+      const { data } = await this.$getSubjectList()
+      this.subjectList = data
+    },
     onCancel() {
       this.$router.push(`/login`)
     },

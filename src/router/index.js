@@ -90,13 +90,13 @@ export const asyncRoutes = [
       {
         path: 'teacher',
         name: 'Teacher',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/user/teacher/index'),
         meta: { title: '老师管理', icon: 'table' }
       },
       {
         path: 'student',
         name: 'Tree',
-        component: () => import('@/views/tree/index'),
+        component: () => import('@/views/user/student/index'),
         meta: { title: '学生管理', icon: 'tree' }
       }
     ]

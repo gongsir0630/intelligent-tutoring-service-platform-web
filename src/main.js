@@ -11,6 +11,7 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
+import allApi from './api'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -34,6 +35,12 @@ if (process.env.NODE_ENV === 'production') {
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+
+allApi.keys().map(item => {
+  Object.keys(allApi(item)).forEach(key => {
+    Vue.prototype['$' + key] = allApi(item)[key]
+  })
+})
 
 new Vue({
   el: '#app',

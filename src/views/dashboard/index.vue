@@ -59,7 +59,7 @@
           </el-row>
           <hr>
           <el-table
-            :data="tableData"
+            :data="noticeList"
             border
             style="width: 98%"
           >
@@ -147,7 +147,7 @@ export default {
       'name',
       'roles',
       'avatar',
-      'tableData'
+      'noticeList'
     ])
   },
   methods: {

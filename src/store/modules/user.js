@@ -1,4 +1,4 @@
-import { login, logout, getInfo, register } from '@/api/user'
+import { login, logout, getInfo, register, getUserList, getStudentGradeList } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -8,23 +8,8 @@ const getDefaultState = () => {
     name: '',
     avatar: '',
     roles: [],
-    tableData: [{ // 对象
-      title: '何双宝', // 字段
-      content: '上海',
-      date: '2016-05-02'
-    }, {
-      title: '何双宝',
-      content: '上海',
-      date: '2016-05-02'
-    }, {
-      title: '何双宝',
-      content: '成都',
-      date: '2016-05-02'
-    }, {
-      title: '张三',
-      content: '上海',
-      date: '2016-05-02'
-    }]
+    userList: [],
+    studentGradeList: []
   }
 }
 
@@ -45,13 +30,45 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_USER_LIST: (state, userList) => {
+    state.userList = userList
+  },
+  SET_GRADE_LIST: (state, studentGradeList) => {
+    state.studentGradeList = studentGradeList
   }
 }
 
 const actions = {
+  // query studentGradeList
+  getStudentGradeList({ commit }, queryParam) {
+    return new Promise((resolve, reject) => {
+      getStudentGradeList(queryParam).then(response => {
+        const { data } = response
+        console.log(data)
+        commit('SET_GRADE_LIST', data)
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  // query userList
+  getUserList({ commit }, queryParam) {
+    return new Promise((resolve, reject) => {
+      getUserList(queryParam).then(response => {
+        const { data } = response
+        console.log(data)
+        commit('SET_USER_LIST', data)
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
   // user register
   register({ commit }, userInfo) {
-    const { username, role, name, password, introduction, phone } = userInfo
+    const { username, role, name, password, introduction, phone, school, grade, campus, subject } = userInfo
     console.log(userInfo)
     return new Promise((resolve, reject) => {
       register({
@@ -61,7 +78,11 @@ const actions = {
         password,
         introduction,
         phone,
-        avatar: 'https://thirdqq.qlogo.cn/qqapp/1110061270/E0B4163FDCD19C3791B49B64EDB9F688/100'
+        avatar: 'https://thirdqq.qlogo.cn/qqapp/1110061270/E0B4163FDCD19C3791B49B64EDB9F688/100',
+        school,
+        grade,
+        campus,
+        subject
       }).then(response => {
         const { data } = response
         console.log(data)
