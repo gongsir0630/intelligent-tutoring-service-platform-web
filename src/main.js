@@ -36,6 +36,7 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
+// 将所有 api 全局挂载, 可以直接使用 this.$api 访问方法
 allApi.keys().map(item => {
   Object.keys(allApi(item)).forEach(key => {
     Vue.prototype['$' + key] = allApi(item)[key]

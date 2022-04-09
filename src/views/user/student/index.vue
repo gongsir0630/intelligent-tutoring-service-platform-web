@@ -16,11 +16,11 @@
           type="selection"
           width="55"
         />
-        <el-table-column align="center" label="序号" width="95">
+        <!-- <el-table-column align="center" label="序号" width="95">
           <template slot-scope="scope">
             {{ scope.$index }}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="用户账号" width="200">
           <template slot-scope="scope">
             {{ scope.row.username }}
@@ -263,8 +263,10 @@ export default {
     async handleSet(userId) {
       console.log(this.current)
       console.log(userId)
-      await this.$update(this.current)
-      this.fetchData()
+      // 更新数据并刷新列表
+      this.$update(this.current).then(() => {
+        this.fetchData()
+      })
       this.dialogFormVisible = false
     }
   }

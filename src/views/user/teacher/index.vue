@@ -16,11 +16,11 @@
           type="selection"
           width="55"
         />
-        <el-table-column align="center" label="序号" width="95">
+        <!-- <el-table-column align="center" label="序号" width="95">
           <template slot-scope="scope">
             {{ scope.$index }}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="用户账号" width="200">
           <template slot-scope="scope">
             {{ scope.row.username }}

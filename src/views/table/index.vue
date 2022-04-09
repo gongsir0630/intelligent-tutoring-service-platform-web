@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getAnnouncementList } from '@/api/announcement'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -75,7 +75,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
+      getAnnouncementList().then(response => {
         this.list = response.data.items
         this.listLoading = false
       })

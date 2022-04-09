@@ -81,7 +81,7 @@
             >
               <template slot-scope="scope">
                 <el-button type="text" size="small" @click="handleClick(scope.$index, scope.row)">编辑</el-button>
-                <el-button type="text" size="small" @click.native.prevent="deleteRow(scope.$index, tableData)">删除</el-button>
+                <el-button type="text" size="small" @click.native.prevent="deleteRow(scope.$index)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -132,7 +132,9 @@ export default {
       strokeWidth: 20,
       stuSum: 90,
       dialogFormVisible: false,
+      noticeList: [],
       form: {
+        id: 0,
         title: '',
         content: '',
         date: ''
@@ -146,11 +148,19 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'avatar',
-      'noticeList'
+      'avatar'
     ])
   },
+  created() {
+    this.getData()
+  },
   methods: {
+    getData() {
+      // 从后端初始化数据
+      this.$getAnnouncementList().then((data) => {
+        this.noticeList = data?.data
+      })
+    },
     format(percentage) {
       return `${percentage * 5}人`
     },
@@ -165,15 +175,43 @@ export default {
     save2TableData() {
       console.log(this.form)
       if (this.op === 'add') {
-        this.tableData.push(this.form)
+        this.noticeList.push(this.form)
       } else {
-        this.tableData[this.curIndex] = this.form
+        this.noticeList[this.curIndex] = this.form
       }
+      this.$saveAnnouncement(this.form).then(() => {
+        this.$message({
+          type: 'success',
+          message: `保存成功!`
+        })
+        // 刷新数据
+        this.getData()
+      })
       this.dialogFormVisible = false
       this.clickForm()
     },
-    deleteRow(index, rows) {
-      rows.splice(index, 1)
+    deleteRow(index) {
+      this.$confirm(`此操作将永久删除数据, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.list.splice(index, 1)
+        // 后端接口删除用户
+        this.$deleteAnnouncement(this.noticeList[index]).then(() => {
+          this.$message({
+            type: 'success',
+            message: `删除成功!`
+          })
+          // 刷新数据
+          this.getData()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     handleClickAdd() {
       this.dialogFormVisible = true
@@ -181,6 +219,7 @@ export default {
     },
     clickForm() {
       this.form = {
+        id: 0,
         title: '',
         content: '',
         date: ''
