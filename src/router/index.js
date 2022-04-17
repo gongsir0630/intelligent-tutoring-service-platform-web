@@ -84,7 +84,7 @@ export const asyncRoutes = [
     path: '/user',
     component: Layout,
     redirect: '/user/teacher',
-    name: 'Example',
+    name: 'User',
     meta: { title: '用户管理', icon: 'el-icon-s-help', roles: ['admin'] },
     children: [
       {
@@ -95,7 +95,7 @@ export const asyncRoutes = [
       },
       {
         path: 'student',
-        name: 'Tree',
+        name: 'Student',
         component: () => import('@/views/user/student/index'),
         meta: { title: '学生管理', icon: 'tree' }
       }
@@ -103,15 +103,15 @@ export const asyncRoutes = [
   },
 
   {
-    path: '/example',
+    path: '/academic',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
+    redirect: '/academic/course',
+    name: 'Academic',
     meta: { title: '教务管理', icon: 'el-icon-s-help', roles: ['admin'] },
     children: [
       {
-        path: 'table',
-        name: 'Table',
+        path: 'course',
+        name: 'Course',
         component: () => import('@/views/table/index'),
         meta: { title: '课程管理', icon: 'table' }
       },
@@ -125,12 +125,12 @@ export const asyncRoutes = [
   },
 
   {
-    path: '/form',
+    path: '/announcement',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'Announcement',
         component: () => import('@/views/form/index'),
         meta: { title: '公告管理', icon: 'form', roles: ['admin'] }
       }
