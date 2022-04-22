@@ -2,7 +2,7 @@
   <el-container>
     <!-- <el-header>个人信息</el-header> -->
     <el-main>
-      <el-row type="flex" class="row-bg" justify="space-around">
+      <el-row type="flex" justify="space-around">
         <el-col :span="8">
           <div class="grid-content bg-purple">
             <el-form ref="form" :model="form" label-width="80px">
@@ -131,7 +131,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   body {
     background-color: #E9EEF3;
   }
@@ -150,7 +150,7 @@ export default {
   }
 
   .el-main {
-    background-color: #E9EEF3;
+    /* background-color: #E9EEF3; */
     color: #333;
     text-align: center;
     line-height: 160px;
