@@ -9,6 +9,8 @@ const getDefaultState = () => {
     avatar: '',
     roles: [],
     userList: [],
+    phone: '',
+    school: '',
     studentGradeList: []
   }
 }
@@ -24,6 +26,12 @@ const mutations = {
   },
   SET_NAME: (state, name) => {
     state.name = name
+  },
+  SET_PHONE: (state, phone) => {
+    state.phone = phone
+  },
+  SET_SCHOOL: (state, school) => {
+    state.school = school
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -120,7 +128,7 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar } = data
+        const { roles, name, avatar, phone, school } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -129,6 +137,8 @@ const actions = {
 
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
+        commit('SET_SCHOOL', school)
+        commit('SET_PHONE', phone)
         commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {

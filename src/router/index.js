@@ -157,7 +157,7 @@ export const asyncRoutes = [
       {
         path: 'bookClass',
         name: 'BookClass',
-        component: () => import('@/views/form/index'),
+        component: () => import('@/views/course/book'),
         meta: { title: '课程预约', icon: 'form', roles: ['student'] }
       }
     ]
