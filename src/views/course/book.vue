@@ -79,7 +79,8 @@ export default {
       subjectList: [],
       selectedSubject: '',
       form: {
-        score: ''
+        score: '',
+        teacherUsername: ''
       },
       formLabelWidth: '100px',
       op: 'add',
@@ -104,6 +105,7 @@ export default {
   methods: {
     book(tUsername) {
       console.log(tUsername)
+      this.form.teacherUsername = tUsername
       this.dialogFormVisible = true
     },
     searchTeacher(subject) {
@@ -137,18 +139,22 @@ export default {
     },
     submitBook() {
       console.log(this.form)
-      this.$message({
-        type: 'success',
-        message: `提交成功!`
+      this.$bookCourse(this.form).then((data) => {
+        console.log(data)
+        this.$message({
+          type: 'success',
+          message: `提交成功!`
+        })
+        // 刷新数据
+        this.getData()
+        this.dialogFormVisible = false
+        this.clickForm()
       })
-      // 刷新数据
-      this.getData()
-      this.dialogFormVisible = false
-      this.clickForm()
     },
     clickForm() {
       this.form = {
-        score: ''
+        score: '',
+        teacherUsername: ''
       }
     },
     handleClickCancel() {

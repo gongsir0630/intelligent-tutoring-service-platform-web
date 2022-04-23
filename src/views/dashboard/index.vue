@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row type="flex" justify="space-around" style="margin-top: 20px;background-color: #EBEEF5;">
+    <el-row type="flex" justify="space-around" style="margin-top: 20px;background-color: #EBEEF5; align-items: center;">
       <el-col :span="5">
         <el-row>
           <el-col :span="24">
@@ -37,7 +37,7 @@
     </el-row>
 
     <el-row type="flex" justify="space-around" style="margin-top: 20px;">
-      <el-col :span="5" style="text-align:left">
+      <el-col v-if="roles[0] === 'admin'" :span="5" style="text-align:left">
         <div class="my-border" style="border:1px solid #000">
           <h2 class="span-class">学校数据</h2>
           <hr>
@@ -47,15 +47,23 @@
           <span class="span-class">兼职总数</span><el-progress :text-inside="true" :percentage="3" :format="format" color="#6f7ad3" :stroke-width="strokeWidth" />
         </div>
       </el-col>
+
       <el-col :span="17" style="text-align:center">
         <div class="my-border" style="border:1px solid #000">
-          <el-row type="flex" justify="space-around" style="margin-bottom: 0px;">
-            <el-col :span="10" style="text-align:left;">
-              <h2>校区备注</h2>
-            </el-col>
-            <el-col :span="10" style="text-align:right">
-              <el-button type="primary" size="small" @click="handleClickAdd">添加</el-button>
-            </el-col>
+          <el-row type="flex" justify="space-around" style="margin-bottom: 0px; align-items: center;">
+            <template v-if="roles[0] === 'admin'">
+              <el-col :span="10" style="text-align:left;">
+                <h2>校区备注</h2>
+              </el-col>
+              <el-col :span="10" style="text-align:right">
+                <el-button type="primary" size="small" @click="handleClickAdd">添加</el-button>
+              </el-col>
+            </template>
+            <template v-else>
+              <el-col :span="24" style="text-align:left;">
+                <h2>校区备注</h2>
+              </el-col>
+            </template>
           </el-row>
           <hr>
           <el-table
@@ -76,6 +84,7 @@
               label="时间"
             />
             <el-table-column
+              v-if="roles[0] === 'admin'"
               fixed="right"
               label="操作"
             >
@@ -240,7 +249,7 @@ export default {
     margin-bottom: 20px;
     margin-left: 10px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
   .el-col {
     border-radius: 4px;

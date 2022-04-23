@@ -76,7 +76,7 @@ const actions = {
   },
   // user register
   register({ commit }, userInfo) {
-    const { username, role, name, password, introduction, phone, school, grade, campus, subject } = userInfo
+    const { username, role, name, password, introduction, phone, mail, school, grade, campus, subject } = userInfo
     console.log(userInfo)
     return new Promise((resolve, reject) => {
       register({
@@ -86,6 +86,7 @@ const actions = {
         password,
         introduction,
         phone,
+        mail,
         avatar: 'https://thirdqq.qlogo.cn/qqapp/1110061270/E0B4163FDCD19C3791B49B64EDB9F688/100',
         school,
         grade,

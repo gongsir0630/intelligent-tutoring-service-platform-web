@@ -31,6 +31,9 @@
               <el-form-item label="手机号码">
                 <el-input v-model="form.phone" />
               </el-form-item>
+              <el-form-item label="邮箱">
+                <el-input v-model="form.mail" />
+              </el-form-item>
               <el-form-item v-show="form.role=='student'" label="学校">
                 <el-input v-model="form.school" />
               </el-form-item>
@@ -84,6 +87,7 @@ export default {
         name: '',
         introduction: '',
         phone: '',
+        mail: '',
         role: 'student',
         school: '',
         grade: '',
@@ -131,7 +135,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   body {
     background-color: #E9EEF3;
   }

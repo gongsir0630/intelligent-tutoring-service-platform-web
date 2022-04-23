@@ -112,7 +112,7 @@ export const asyncRoutes = [
       {
         path: 'course',
         name: 'Course',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/course/list'),
         meta: { title: '课程管理', icon: 'table' }
       },
       {
@@ -159,6 +159,19 @@ export const asyncRoutes = [
         name: 'BookClass',
         component: () => import('@/views/course/book'),
         meta: { title: '课程预约', icon: 'form', roles: ['student'] }
+      }
+    ]
+  },
+
+  {
+    path: '/courseList',
+    component: Layout,
+    children: [
+      {
+        path: 'courseList',
+        name: 'courseList',
+        component: () => import('@/views/course/list'),
+        meta: { title: '课程信息', icon: 'form', roles: ['student', 'teacher'] }
       }
     ]
   },

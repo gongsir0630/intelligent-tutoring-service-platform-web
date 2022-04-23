@@ -44,6 +44,11 @@
             <span>{{ scope.row.phone }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="邮箱" width="110" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.mail }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="自我介绍" width="210" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.introduction }}</span>
@@ -138,6 +143,15 @@
           />
         </el-form-item>
         <el-form-item
+          label="邮箱"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="current.mail"
+            auto-complete="off"
+          />
+        </el-form-item>
+        <el-form-item
           label="自我介绍"
           :label-width="formLabelWidth"
         >
@@ -205,6 +219,7 @@ export default {
         name: '',
         avatar: '',
         phone: '',
+        mail: '',
         introduction: '',
         birthday: '',
         school: '',
