@@ -25,8 +25,9 @@ import '@/permission' // permission control
  * please remove it before going online ! ! !
  */
 if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
+  // const { mockXHR } = require('../mock')
+  // mockXHR()
+  console.log('线上环境: 接口代理到后端api服务')
 }
 
 // set ElementUI lang to EN
