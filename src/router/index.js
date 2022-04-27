@@ -119,7 +119,8 @@ export const asyncRoutes = [
         path: 'tree',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
-        meta: { title: '试听安排', icon: 'tree' }
+        meta: { title: '试听安排', icon: 'tree' },
+        hidden: true
       }
     ]
   },

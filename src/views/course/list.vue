@@ -5,7 +5,8 @@
         <h2>{{ roles[0] === 'admin' ? '全部课程' : '我的课程' }}</h2>
       </el-col>
       <el-col :span="10" style="text-align:right">
-        <el-button type="primary" size="small" @click="handleClickAdd">添加</el-button>
+        <!-- 这里暂时不需要添加按钮, 使用 v-show 隐掉 -->
+        <el-button v-show="false" type="primary" size="small" @click="handleClickAdd">添加</el-button>
       </el-col>
     </el-row>
     <el-table

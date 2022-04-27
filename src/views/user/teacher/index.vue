@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-row class="margin-bottom">
-      <el-button type="danger" round>批量删除</el-button>
+      <el-button v-show="false" type="danger" round>批量删除</el-button>
     </el-row>
     <el-row>
       <el-table
