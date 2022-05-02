@@ -34,6 +34,8 @@
       </el-col>
     </el-row>
 
+    <el-footer>Footer</el-footer>
+
     <el-dialog title="预约" :visible.sync="dialogFormVisible">
       <el-form :model="form" style="width:80%">
         <el-form-item label="姓名" :label-width="formLabelWidth">
@@ -47,6 +49,9 @@
         </el-form-item>
         <el-form-item label="当前分数" :label-width="formLabelWidth">
           <el-input v-model="form.score" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="留言" :label-width="formLabelWidth">
+          <el-input v-model="form.message" type="textarea" autocomplete="off" />
         </el-form-item>
         <!-- <el-form-item label="时间" :label-width="formLabelWidth">
           <el-date-picker
@@ -80,7 +85,8 @@ export default {
       selectedSubject: '',
       form: {
         score: '',
-        teacherUsername: ''
+        teacherUsername: '',
+        message: ''
       },
       formLabelWidth: '100px',
       op: 'add',
@@ -193,6 +199,12 @@ export default {
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
+  }
+  .el-footer {
+    background-color: #B3C0D1;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
   }
 </style>
 

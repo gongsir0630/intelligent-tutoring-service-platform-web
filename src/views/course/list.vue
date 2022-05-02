@@ -62,6 +62,16 @@
       <p class="el-drawer-p">分数:  {{ curData.score }}</p>
       <p class="el-drawer-p">学校:  {{ curData.student.school }}</p>
       <p class="el-drawer-p">电话:  {{ curData.student.phone }}</p>
+      <p class="el-drawer-p" style="color: blue;">聊天记录: </p>
+      <el-timeline>
+        <el-timeline-item
+          v-for="(msg, index) in curData.messageList"
+          :key="index"
+          :timestamp="msg.createTimeStr + ' from ' + msg.from"
+        >
+          {{ msg.content }}
+        </el-timeline-item>
+      </el-timeline>
     </el-drawer>
 
     <el-dialog title="添加公告" :visible.sync="dialogFormVisible">
@@ -85,6 +95,9 @@
             value-format="yyyy-MM-dd"
           />
         </el-form-item> -->
+        <el-form-item label="留言" :label-width="formLabelWidth">
+          <el-input v-model="form.message" type="textarea" autocomplete="off" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleClickCancel">取 消</el-button>
@@ -109,13 +122,15 @@ export default {
           school: '',
           phone: ''
         },
-        score: ''
+        score: '',
+        messageList: []
       },
       drawer: false,
       form: {
         id: 0,
         courseAllowance: '',
-        courseState: ''
+        courseState: '',
+        message: ''
       },
       formLabelWidth: '100px',
       op: 'add',

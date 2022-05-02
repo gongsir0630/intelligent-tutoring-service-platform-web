@@ -19,21 +19,33 @@
           </el-col>
         </el-row>
       </el-col>
-      <el-col :span="5">
-        <div class="grid-content bg-purple-light">
-          <p>新学生({{ stuCnt }}人)</p>
-        </div>
-      </el-col>
-      <el-col :span="5">
-        <div class="grid-content bg-purple-light">
-          <p>新老师({{ teacherCnt }}人)</p>
-        </div>
-      </el-col>
-      <el-col :span="5">
-        <div class="grid-content bg-purple-light">
-          <p>新教务({{ teachingAffairsCnt }}人)</p>
-        </div>
-      </el-col>
+      <template v-if="roles[0] === 'admin'">
+        <el-col :span="5">
+          <div class="grid-content bg-purple-light">
+            <p>新学生({{ stuCnt }}人)</p>
+          </div>
+        </el-col>
+        <el-col :span="5">
+          <div class="grid-content bg-purple-light">
+            <p>新老师({{ teacherCnt }}人)</p>
+          </div>
+        </el-col>
+        <el-col :span="5">
+          <div class="grid-content bg-purple-light">
+            <p>新教务({{ teachingAffairsCnt }}人)</p>
+          </div>
+        </el-col>
+      </template>
+      <template v-else>
+        <el-col :span="5">
+          <div class="grid-content">
+            <el-badge :value="messageList.filter(m => m.toSeeState === false).length" class="item">
+              <!-- <el-button type="">新留言</el-button> -->
+              <el-button type="warning" icon="el-icon-message" @click="seeMessage">消息</el-button>
+            </el-badge>
+          </div>
+        </el-col>
+      </template>
     </el-row>
 
     <el-row type="flex" justify="space-around" style="margin-top: 20px;">
@@ -124,6 +136,36 @@
         <el-button type="primary" @click="save2TableData">确 定</el-button>
       </div>
     </el-dialog>
+
+    <el-drawer
+      title="消息盒子 (点击卡片即可将消息标记为已读)"
+      :visible.sync="drawer"
+      direction="rtl"
+    >
+      <el-card v-for="msg in messageList" :key="msg.id" class="box-card" @click.native="markRead(msg)">
+        <div slot="header" class="clearfix">
+          <el-badge :is-dot="!msg.toSeeState" style="padding-right:5px;">
+            <span>{{ msg.from + '  ' + msg.createTimeStr }}</span>
+          </el-badge>
+          <el-button style="float: right; padding: 2px 0" type="primary" @click="openReplayMessage(msg)">回复</el-button>
+        </div>
+        <div class="text item">
+          {{ msg.content }}
+        </div>
+      </el-card>
+    </el-drawer>
+
+    <el-dialog title="回复留言" :visible.sync="replayFormVisible">
+      <el-form :model="replayForm" style="width:80%">
+        <el-form-item :label="'回复@' + replayForm.to" :label-width="formLabelWidth">
+          <el-input v-model="replayForm.message" type="textarea" autocomplete="off" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="replayCancel">取 消</el-button>
+        <el-button type="primary" @click="replayMessage">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -150,7 +192,26 @@ export default {
       },
       formLabelWidth: '100px',
       op: 'add',
-      curIndex: 0
+      curIndex: 0,
+      drawer: false,
+      messageList: [{
+        id: 0,
+        from: '何双宝',
+        createTimeStr: '2022-05-01',
+        content: '这是留言内容',
+        toSeeState: true
+      }, {
+        id: 1,
+        from: '何双宝',
+        createTimeStr: '2022-05-01',
+        content: '这是留言内容',
+        toSeeState: false
+      }],
+      replayFormVisible: false,
+      replayForm: {
+        id: 0,
+        message: ''
+      }
     }
   },
   computed: {
@@ -164,11 +225,59 @@ export default {
     this.getData()
   },
   methods: {
+    replayCancel() {
+      this.replayFormVisible = false
+      this.replayForm = {
+        id: 0,
+        message: '',
+        to: ''
+      }
+    },
+    openReplayMessage(msg) {
+      console.log(msg)
+      this.replayFormVisible = true
+      this.replayForm = {
+        id: msg.id,
+        message: '',
+        to: msg.from
+      }
+    },
+    replayMessage() {
+      this.$replayMessage(this.replayForm).then(() => {
+        this.replayCancel()
+        this.$message({
+          type: 'success',
+          message: `消息回复成功!`
+        })
+      })
+    },
+    seeMessage() {
+      this.drawer = true
+      this.getMessageData()
+    },
+    markRead(msg) {
+      console.log(msg)
+      this.$markRead(msg.id).then(data => {
+        console.log(data)
+        msg.toSeeState = true
+        // 刷新数据
+        this.getMessageData()
+      })
+    },
+    getMessageData() {
+      this.$getMessageList().then(data => {
+        this.messageList = data?.data
+      }).catch(() => {
+        this.messageList = []
+      })
+    },
     getData() {
       // 从后端初始化数据
       this.$getAnnouncementList().then((data) => {
         this.noticeList = data?.data
       })
+      // 留言数据
+      this.getMessageData()
     },
     format(percentage) {
       return `${percentage * 5}人`
@@ -301,5 +410,10 @@ export default {
   }
   .el-form-item .el-date-picker {
     width: 100%;
+  }
+  .box-card {
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 </style>
