@@ -2,35 +2,32 @@
   <div>
     <el-row type="flex" justify="space-around" style="margin-bottom: 0px;">
       <el-col :span="10" style="text-align:left;">
-        <h2>公告列表</h2>
+        <h2>教学成果</h2>
       </el-col>
       <el-col :span="10" style="text-align:right">
-        <el-button type="primary" size="small" @click="handleClickAdd">添加</el-button>
+        <el-button type="primary" size="small" @click="handleClickAdd">新增</el-button>
       </el-col>
     </el-row>
     <el-table
-      :data="noticeList"
+      :data="dataList"
       border
       style="width: 98%"
     >
       <el-table-column
-        prop="title"
-        label="标题"
+        prop="courseVO.student.name"
+        label="学生姓名"
       />
       <el-table-column
-        prop="content"
-        label="内容"
-      />
-      <el-table-column
-        prop="date"
-        label="时间"
+        prop="courseVO.courseStateDesc"
+        label="课程状态"
       />
       <el-table-column
         prop="date"
-        label="折线图"
+        label="学生成绩趋势"
+        width="400px"
       >
         <template slot-scope="scope">
-          <div :id="`main${scope.$index}`" :ref="'myEcharts-' + scope.row.id" style="width:100%; height:200px;" />
+          <div :id="`myEcharts-${scope.row.id}`" :ref="`myEcharts-${scope.row.id}`" style="width:100%; height:200px;" />
         </template>
       </el-table-column>
       <el-table-column
@@ -44,27 +41,30 @@
       </el-table-column>
     </el-table>
 
-    <div ref="myEcharts" style="width:400px; height:200px;" />
+    <!-- <div ref="myEcharts" style="width:400px; height:200px;" /> -->
 
-    <el-dialog title="添加公告" :visible.sync="dialogFormVisible">
+    <el-dialog title="添加成果" :visible.sync="dialogFormVisible">
       <el-form :model="form" style="width:80%">
-        <el-form-item label="标题" :label-width="formLabelWidth">
-          <el-input v-model="form.title" autocomplete="off" />
+        <el-form-item label="学生" :label-width="formLabelWidth">
+          <el-select v-model="form.courseId" placeholder="选择学生">
+            <el-option v-for="item in courseDataList" :key="item.id" :label="`${item.student.name}-${item.teacher.subjectLabel} (${item.courseStateDesc})`" :value="item.id" />
+          </el-select>
+          <!-- <el-input v-model="form.title" autocomplete="off" /> -->
         </el-form-item>
-        <el-form-item label="内容" :label-width="formLabelWidth">
-          <!-- <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
-          </el-select> -->
-          <el-input v-model="form.content" autocomplete="off" />
+        <el-form-item label="第一次月考" :label-width="formLabelWidth">
+          <el-input v-model="form.score0" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="时间" :label-width="formLabelWidth">
-          <el-date-picker
-            v-model="form.date"
-            type="date"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd"
-          />
+        <el-form-item label="第二次月考" :label-width="formLabelWidth">
+          <el-input v-model="form.score1" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="期中考试" :label-width="formLabelWidth">
+          <el-input v-model="form.score2" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="第三次月考" :label-width="formLabelWidth">
+          <el-input v-model="form.score3" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="第四次月考" :label-width="formLabelWidth">
+          <el-input v-model="form.score4" autocomplete="off" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -84,16 +84,20 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
-      noticeList: [],
+      dataList: [],
       form: {
-        id: 0,
-        title: '',
-        content: '',
-        date: ''
+        id: '',
+        score0: '',
+        score1: '',
+        score2: '',
+        score3: '',
+        score4: '',
+        courseId: ''
       },
       formLabelWidth: '100px',
       op: 'add',
-      curIndex: 0
+      curIndex: 0,
+      courseDataList: []
     }
   },
   computed: {
@@ -103,67 +107,56 @@ export default {
   created() {
     this.getData()
   },
-  mounted() {
-    this.init()
-  },
+  // mounted() {
+  //   this.init()
+  // },
   methods: {
     init() {
       console.log(this.$refs)
-      // 渲染表格外面
-      const myChart1 = echarts.init(this.$refs['myEcharts'])
-      console.log(myChart1)
-      // 使用刚指定的配置项和数据显示图表。
-      myChart1.setOption({
-        xAxis: {
-          type: 'category',
-          data: ['A', 'B', 'C']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            data: [120, 200, 150],
-            type: 'line'
-          }
-        ]
-      })
-      console.log(myChart1)
-      // debugger
-
       // 渲染表格里面
-      this.$nextTick(() => {
-        const myChart = echarts.init(this.$refs['myEcharts-1'])
-        console.log(myChart)
-        // debugger
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption({
-          xAxis: {
-            type: 'category',
-            data: ['A', 'B', 'C']
-          },
-          yAxis: {
-            type: 'value'
-          },
-          series: [
-            {
-              data: [120, 200, 150],
-              type: 'line'
-            }
-          ]
+      setTimeout(() => {
+        this.dataList.forEach(e => {
+          const myChart = echarts.init(document.querySelector(`#myEcharts-${e.id}`))
+          // console.log(myChart)
+          // debugger
+          // 使用刚指定的配置项和数据显示图表。
+          myChart.setOption({
+            xAxis: {
+              type: 'category',
+              data: ['第一次月考', '第二次月考', '期中考试', '第三次月考', '第四次月考'],
+              show: false
+            },
+            yAxis: {
+              type: 'value',
+              show: false
+            },
+            series: [
+              {
+                data: [e.score0, e.score1, e.score2, e.score3, e.score4],
+                type: 'line',
+                label: {
+                  show: true,
+                  position: 'bottom'
+                }
+              }
+            ]
+          })
+          console.log(myChart)
         })
-        console.log(myChart)
-      })
+      }, 1)
       // debugger
     },
     getData() {
       // 从后端初始化数据
-      this.$getAnnouncementList().then((data) => {
-        this.noticeList = data?.data
+      this.$getAchievementList().then((data) => {
+        this.dataList = data?.data
+        this.$nextTick(() => {
+          this.init()
+        })
       })
-    },
-    format(percentage) {
-      return `${percentage * 5}人`
+      this.$getCourseList().then((data) => {
+        this.courseDataList = data?.data
+      })
     },
     handleClick(index, row) {
       console.log(index)
@@ -176,11 +169,11 @@ export default {
     save2TableData() {
       console.log(this.form)
       if (this.op === 'add') {
-        this.noticeList.push(this.form)
+        this.dataList.push(this.form)
       } else {
-        this.noticeList[this.curIndex] = this.form
+        this.dataList[this.curIndex] = this.form
       }
-      this.$saveAnnouncement(this.form).then(() => {
+      this.$saveAchievement(this.form).then(() => {
         this.$message({
           type: 'success',
           message: `保存成功!`
@@ -197,9 +190,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.noticeList.splice(index, 1)
+        this.dataList.splice(index, 1)
         // 后端接口删除用户
-        this.$deleteAnnouncement(this.noticeList[index]).then(() => {
+        this.$deleteAchievement(this.dataList[index]).then(() => {
           this.$message({
             type: 'success',
             message: `删除成功!`
@@ -217,13 +210,17 @@ export default {
     handleClickAdd() {
       this.dialogFormVisible = true
       this.op = 'add'
+      this.clickForm()
     },
     clickForm() {
       this.form = {
-        id: 0,
-        title: '',
-        content: '',
-        date: ''
+        id: '',
+        score0: '',
+        score1: '',
+        score2: '',
+        score3: '',
+        score4: '',
+        courseId: ''
       }
     },
     handleClickCancel() {

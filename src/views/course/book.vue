@@ -34,7 +34,7 @@
       </el-col>
     </el-row>
 
-    <el-footer>Footer</el-footer>
+    <!-- <el-footer>Footer</el-footer> -->
 
     <el-dialog title="预约" :visible.sync="dialogFormVisible">
       <el-form :model="form" style="width:80%">

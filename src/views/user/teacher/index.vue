@@ -76,7 +76,10 @@
         </el-table-column>
         <el-table-column label="风采展示" width="210" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.display }}</span>
+            <el-image
+              style="width: 100%; height: 100px"
+              :src="scope.row.display"
+            />
           </template>
         </el-table-column>
 

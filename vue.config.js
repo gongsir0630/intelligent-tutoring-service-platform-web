@@ -39,10 +39,12 @@ module.exports = {
     proxy: {
       '/dev-api': {
         target: 'http://localhost',
+        // target: 'https://intelligent.gongsir.club',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
           '^/dev-api': ''
+          // '^/dev-api': '/prod-api'
         }
       }
     }
