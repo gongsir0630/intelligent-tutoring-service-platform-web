@@ -114,13 +114,6 @@ export const asyncRoutes = [
         name: 'Course',
         component: () => import('@/views/course/list'),
         meta: { title: '课程管理', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '试听安排', icon: 'tree' },
-        hidden: true
       }
     ]
   },
@@ -132,7 +125,7 @@ export const asyncRoutes = [
       {
         path: 'index',
         name: 'Announcement',
-        component: () => import('@/views/form/index'),
+        component: () => import('@/views/announcement/index'),
         meta: { title: '公告管理', icon: 'form', roles: ['admin'] }
       }
     ]
@@ -145,7 +138,7 @@ export const asyncRoutes = [
       {
         path: 'teachingAchievements',
         name: 'TeachingAchievements',
-        component: () => import('@/views/form/index'),
+        component: () => import('@/views/achievement/index'),
         meta: { title: '教学成果', icon: 'form', roles: ['teacher'] }
       }
     ]
