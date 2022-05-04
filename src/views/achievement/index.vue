@@ -168,9 +168,7 @@ export default {
     },
     save2TableData() {
       console.log(this.form)
-      if (this.op === 'add') {
-        this.dataList.push(this.form)
-      } else {
+      if (this.op === 'edit') {
         this.dataList[this.curIndex] = this.form
       }
       this.$saveAchievement(this.form).then(() => {

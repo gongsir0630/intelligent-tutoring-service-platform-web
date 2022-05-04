@@ -5,7 +5,7 @@
       <el-row type="flex" class="row-bg" justify="space-around">
         <el-col :span="8">
           <div class="grid-content bg-purple">
-            <el-form ref="form" :model="form" label-width="80px">
+            <el-form ref="form" :model="form" :rules="dataRules" label-width="80px">
               <el-form-item label="用户角色">
                 <el-select v-model="form.role" placeholder="请选择角色">
                   <el-option label="学生" value="student" />
@@ -13,13 +13,13 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="用户名">
+              <el-form-item label="用户名" prop="username">
                 <el-input v-model="form.username" />
               </el-form-item>
-              <el-form-item label="密码">
+              <el-form-item label="密码" prop="password">
                 <el-input v-model="form.password" />
               </el-form-item>
-              <el-form-item label="重复密码">
+              <el-form-item label="重复密码" prop="passwordAgain">
                 <el-input v-model="form.passwordAgain" />
               </el-form-item>
               <el-form-item label="姓名">
@@ -28,7 +28,7 @@
               <el-form-item label="自我介绍">
                 <el-input v-model="form.introduction" />
               </el-form-item>
-              <el-form-item label="手机号码">
+              <el-form-item label="手机号码" prop="phone">
                 <el-input v-model="form.phone" />
               </el-form-item>
               <el-form-item label="邮箱">
@@ -79,6 +79,30 @@
 import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
+    const validatePhone = (rule, value, callback) => {
+      if (value.length !== 11) {
+        callback(new Error('手机号码必须是11位'))
+      } else {
+        callback()
+      }
+    }
+    const reg = /(?!^(\d+|[a-zA-Z]+|[~!@#$%^&*?]+)$)^[\w~!@#$%^&*?]{6,12}$/
+    var validateNewPwd = (rule, value, callback) => {
+      console.log(value)
+      if (!reg.test(value)) {
+        callback(new Error('密码应是6-12位数字、字母或字符！'))
+      } else {
+        callback()
+      }
+    }
+    var validateConfirmPwd = (rule, value, callback) => {
+      console.log(value)
+      if (this.form.password !== value) {
+        callback(new Error('两次输入的密码不一致！'))
+      } else {
+        callback()
+      }
+    }
     return {
       form: {
         username: '',
@@ -95,7 +119,13 @@ export default {
         subject: '',
         display: ''
       },
-      subjectList: []
+      subjectList: [],
+      dataRules: {
+        phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }, { validator: validatePhone, trigger: 'blur' }],
+        password: [{ required: true, message: '请输入新密码', trigger: 'blur' }, { validator: validateNewPwd, trigger: 'blur' }],
+        passwordAgain: [{ required: true, message: '请输入确认密码', trigger: 'blur' }, { trigger: 'blur', validator: validateConfirmPwd }],
+        username: [{ required: true, message: '请输入用户名(推荐使用学号或者手机号)', trigger: 'blur' }]
+      }
     }
   },
   computed: {
@@ -121,14 +151,18 @@ export default {
     onSubmit() {
       console.log(this.form)
 
-      this.$store.dispatch('user/register', this.form).then(() => {
-        this.$alert('注册成功', '提示信息', {
-          confirmButtonText: '确定',
-          callback: () => {
-            this.$router.push(`/login`)
-          }
-        })
-      }).catch(() => {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.$store.dispatch('user/register', this.form).then(() => {
+            this.$alert('注册成功', '提示信息', {
+              confirmButtonText: '确定',
+              callback: () => {
+                this.$router.push(`/login`)
+              }
+            })
+          }).catch(() => {
+          })
+        }
       })
     }
   }
