@@ -17,10 +17,10 @@
                 <el-input v-model="form.username" />
               </el-form-item>
               <el-form-item label="密码" prop="password">
-                <el-input v-model="form.password" />
+                <el-input v-model="form.password" type="password" />
               </el-form-item>
               <el-form-item label="重复密码" prop="passwordAgain">
-                <el-input v-model="form.passwordAgain" />
+                <el-input v-model="form.passwordAgain" type="password" />
               </el-form-item>
               <el-form-item label="姓名">
                 <el-input v-model="form.name" />
