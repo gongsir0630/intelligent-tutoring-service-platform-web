@@ -202,7 +202,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.dataList.splice(index, 1)
         // 后端接口删除用户
         this.$deleteAnnouncement(this.dataList[index]).then(() => {
           this.$message({
