@@ -314,7 +314,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        // 后端接口删除用户
+        // 后端接口删除数据
         this.$deleteAnnouncement(this.noticeList[index]).then(() => {
           this.$message({
             type: 'success',

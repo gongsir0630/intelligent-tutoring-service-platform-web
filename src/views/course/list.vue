@@ -202,8 +202,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        // 后端接口删除用户
-        this.$deleteAnnouncement(this.dataList[index]).then(() => {
+        // 后端接口删除课程
+        this.$deleteCourse(this.dataList[index]).then(() => {
           this.$message({
             type: 'success',
             message: `删除成功!`

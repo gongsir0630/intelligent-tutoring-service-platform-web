@@ -23,3 +23,11 @@ export function updateCourse(data) {
     data
   })
 }
+
+export function deleteCourse(data) {
+  return request({
+    url: '/intelligent-tutoring-service-platform/course/delete',
+    method: 'post',
+    data
+  })
+}
